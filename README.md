@@ -1,32 +1,33 @@
 ```mermaid
 stateDiagram-v2
     direction TB
-    %% start
+
+    %% Start
     [*] --> "Application Received"
 
-    %% application branch
-    "Application Received" --> "Under Review"            : submit application
-    "Application Received" --> "Terminated"               : cancel request
+    %% Application branch
+    "Application Received" --> "Under Review"  : Submit Application
+    "Application Received" --> "Cancelled"     : Customer Cancellation
 
-    %% review
-    "Under Review" --> "Approved"                         : approve
-    "Under Review" --> "Rejected"                         : reject
+    %% Review
+    "Under Review" --> "Approved"              : Approve
+    "Under Review" --> "Rejected"              : Reject
 
-    %% approval branch
-    "Approved" --> "Disbursed"                            : disburse
-    "Approved" --> "Cancelled"                            : cancel request
+    %% Post‑approval
+    "Approved" --> "Disbursed"                 : Disburse Funds
+    "Approved" --> "Cancelled"                 : Cancel Pre‑Disbursement
 
-    %% disbursal
-    "Disbursed" --> "In Repayment"                        : funds transferred
-    "Disbursed" --> "Defaulted"                           : prolonged non‑payment
+    %% Disbursal
+    "Disbursed" --> "In Repayment"             : Funds Transferred
+    "Disbursed" --> "Defaulted"                : Prolonged Non‑Payment
 
-    %% repayment
-    "In Repayment" --> "Closed"                           : final payment made
-    "In Repayment" --> "Terminated"                       : cancel request / default
+    %% Repayment
+    "In Repayment" --> "Closed"                : Final Payment Made
+    "In Repayment" --> "Defaulted"             : Default (Non‑Payment)
+    "In Repayment" --> "Closed"                : Prepayment
 
-    %% terminal states
-    "Rejected" --> [*]                                     : process ends
-    "Terminated" --> [*]                                   : process ends
-    "Cancelled" --> [*]                                    : process ends
-    "Defaulted" --> [*]                                    : process ends
-    "Closed" --> [*]                                       : process ends
+    %% Terminal states
+    "Rejected" --> [*]                         : Process Ends  
+    "Cancelled" --> [*]                        : Process Ends  
+    "Defaulted" --> [*]                        : Process Ends  
+    "Closed" --> [*]                           : Process Ends
