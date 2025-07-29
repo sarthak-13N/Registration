@@ -1,37 +1,32 @@
 ```mermaid
 stateDiagram-v2
     direction TB
+    %% start
+    [*] --> "Application Received"
 
-    [*] --> ApplicationSubmitted
+    %% application branch
+    "Application Received" --> "Under Review"            : submit application
+    "Application Received" --> "Terminated"               : cancel request
 
-    ApplicationSubmitted --> UnderPreliminaryValidation : Basic Data Validated
-    ApplicationSubmitted --> Declined                     : Ineligible/Incomplete
+    %% review
+    "Under Review" --> "Approved"                         : approve
+    "Under Review" --> "Rejected"                         : reject
 
-    UnderPreliminaryValidation --> UnderCreditAssessment  : Eligibility Confirmed
-    UnderPreliminaryValidation --> Declined               : Ineligible/Incomplete (Post‑Validation)
+    %% approval branch
+    "Approved" --> "Disbursed"                            : disburse
+    "Approved" --> "Cancelled"                            : cancel request
 
-    UnderCreditAssessment --> Approved                    : Credit Checks Passed
-    UnderCreditAssessment --> Rejected                    : Credit Checks Failed
+    %% disbursal
+    "Disbursed" --> "In Repayment"                        : funds transferred
+    "Disbursed" --> "Defaulted"                           : prolonged non‑payment
 
-    Approved --> DisbursementPreparation                  : Parameters Set
-    Approved --> Cancelled                                : Customer Cancellation
+    %% repayment
+    "In Repayment" --> "Closed"                           : final payment made
+    "In Repayment" --> "Terminated"                       : cancel request / default
 
-    DisbursementPreparation --> Disbursed                 : Sanction Letter Signed
-    DisbursementPreparation --> Cancelled                 : Customer Cancellation (Pre‑Disbursement)
-
-    Disbursed --> Active                                  : Funds Transferred
-    Disbursed --> Defaulted                               : Prolonged Non‑Payment
-
-    Active --> Closed                                     : Fully Paid
-    Active --> Delinquent                                 : EMI Missed (Beyond Grace Period)
-    Active --> Closed                                     : Prepayment
-
-    Delinquent --> Active                                 : EMI Paid (Recovered)
-    Delinquent --> Defaulted                              : Prolonged Non‑Payment
-
-    Defaulted --> Closed                                  : Legal Recovery/Settlement
-
-    Rejected --> [*]                                      : Process Ends
-    Declined --> [*]                                      : Process Ends
-    Cancelled --> [*]                                     : Process Ends
-    Closed --> [*]                                        : Process Ends
+    %% terminal states
+    "Rejected" --> [*]                                     : process ends
+    "Terminated" --> [*]                                   : process ends
+    "Cancelled" --> [*]                                    : process ends
+    "Defaulted" --> [*]                                    : process ends
+    "Closed" --> [*]                                       : process ends
