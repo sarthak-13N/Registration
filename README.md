@@ -1,6 +1,7 @@
 ```mermaid
 stateDiagram-v2
-    direction LR
+    direction TB
+
     [*] --> ApplicationSubmitted
 
     ApplicationSubmitted --> UnderPreliminaryValidation : Basic Data Validated
