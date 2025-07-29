@@ -1,5 +1,7 @@
+```mermaid
 stateDiagram-v2
     direction LR
+
     [*] --> ApplicationSubmitted
 
     state ApplicationSubmitted {
@@ -29,7 +31,7 @@ stateDiagram-v2
 
     state Disbursed {
         Disbursed --> Active : Funds Transferred
-        Disbursed --> Default : Prolonged Non-Payment (Edge Case)
+        Disbursed --> Defaulted : Prolonged Non-Payment
     }
 
     state Active {
@@ -40,11 +42,11 @@ stateDiagram-v2
 
     state Delinquent {
         Delinquent --> Active : EMI Paid (Recovered)
-        Delinquent --> Default : Prolonged Non-Payment
+        Delinquent --> Defaulted : Prolonged Non-Payment
     }
 
-    state Default {
-        Default --> Closed : Legal Recovery/Settlement
+    state Defaulted {
+        Defaulted --> Closed : Legal Recovery/Settlement
     }
 
     state Rejected
